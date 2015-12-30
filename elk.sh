@@ -58,6 +58,7 @@ cp -R ~/kibana-4*/* /opt/kibana/
 
 chown -R kibana: /opt/kibana
 
+sed -i 's/host: "0.0.0.0"/host: "localhost"/g' /opt/kibana/config/kibana.yml
 
 cd /etc/init.d && sudo curl -o kibana https://gist.githubusercontent.com/thisismitch/8b15ac909aed214ad04a/raw/fc5025c3fc499ad8262aff34ba7fde8c87ead7c0/kibana-4.x-init
 
