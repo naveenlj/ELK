@@ -160,5 +160,46 @@ echo 'output {
  
  chkconfig logstash on
  
+ #logstash forwarder setup
  
+ rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+ 
+ cat >> /etc/yum.repos.d/logstash-forwarder.repo << REPO
+[logstash-forwarder]
+name=logstash-forwarder repository
+baseurl=http://packages.elasticsearch.org/logstashforwarder/centos
+gpgcheck=1
+gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+enabled=1
+REPO
+
+yum -y install logstash-forwarder
+
+rm /etc/logstash-forwarder.conf
+cat >> /etc/logstash-forwarder.conf << FORWARD
+{
+The network section covers network configuration :)
+  "network": {
+"servers": [ "elk.mckendrick.io:5000" ],
+"timeout": 15,
+"ssl ca": "/etc/pki/tls/certs/logstash-forwarder.crt"
+  },
+
+The list of files configurations
+  "files": [
+{
+  "paths": [
+"/var/log/messages",
+"/var/log/secure",
+"/var/log/fail2ban.log"
+   ],
+  "fields": { "type": "syslog" }
+}
+  ]
+}
+FORWARD
+
+systemctl restart logstash-forwarder restart
+systemctl enable logstash-forwarder 
+
 
