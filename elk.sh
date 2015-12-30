@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 # Installing ELK via script
 # Created by Naveen
 
