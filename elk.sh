@@ -114,9 +114,11 @@ enabled=1' | tee /etc/yum.repos.d/logstash.repo
 
 yum -y install logstash
 
-cd /etc/pki/tls
+mkdir -p /etc/pki/tls/certs
 
-sudo openssl req -subj '/CN=logstash_server_fqdn/' -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
+mkdir /etc/pki/tls/private
+
+cd /etc/pki/tls; sudo openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
 
 cd ..
 
